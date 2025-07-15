@@ -4,8 +4,8 @@ setup(
     name='fakejobdetector',
     version='0.1',
     description='Fake Job Posting Detection ML Project',
-    author='Your Name',
-    author_email='you@example.com',
+    author='Saurabh Kumar',
+    author_email='ssaurabhkumar061@gmail.com',
     packages=find_packages(),  # Automatically includes all packages in src/
     install_requires=[
         'pandas',

@@ -40,6 +40,6 @@ def predict():
     result = "Fake" if prediction == 1 else "Real"
     return render_template("index.html", prediction=result, probability=f"{proba:.2f}")
 
-# Run the app
-if __name__ == "__main__":
-    app.run(debug=True)
+# # Run the app
+# if __name__ == "__main__":
+#     app.run(debug=True)

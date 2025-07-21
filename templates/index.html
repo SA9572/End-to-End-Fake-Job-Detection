@@ -1,46 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Fake Job Posting Detection</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-  <div class="container mt-5 mb-5">
-    <h2 class="text-center mb-4">🕵️ Fake Job Posting Detection</h2>
-    <form method="POST" action="/predict">
-      {% for field in [
-        'title', 'location', 'department', 'salary_range', 'company_profile',
-        'description', 'requirements', 'benefits', 'employment_type',
-        'required_experience', 'required_education', 'industry', 'function'] %}
-        <div class="mb-3">
-          <label class="form-label">{{ field.replace('_', ' ').title() }}</label>
-          <input type="text" class="form-control" name="{{ field }}" placeholder="Enter {{ field.replace('_', ' ') }}">
-        </div>
-      {% endfor %}
-
-      {% for boolean in ['telecommuting', 'has_company_logo', 'has_questions'] %}
-        <div class="form-check mb-2">
-          <input type="checkbox" class="form-check-input" name="{{ boolean }}" value="1">
-          <label class="form-check-label">{{ boolean.replace('_', ' ').title() }}</label>
-        </div>
-      {% endfor %}
-
-      <button type="submit" class="btn btn-primary w-100 mt-3">🔍 Predict</button>
-    </form>
-
-    {% if prediction %}
-    <div class="alert mt-4 {% if prediction == 'Fake' %}alert-danger{% else %}alert-success{% endif %}">
-      <strong>Prediction:</strong> {{ prediction }}<br>
-      <strong>Confidence:</strong> {{ probability }}%
-    </div>
-    {% endif %}
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html> -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,27 +5,58 @@
   <title>Fake Job Posting Detection</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
   <style>
     body {
-      background: url('https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=1600&q=80') no-repeat center center fixed;
+      background: url('https://images.unsplash.com/photo-1556761175-129418cb2dfe?auto=format&fit=crop&w=1600&q=80') no-repeat center center fixed;
       background-size: cover;
       font-family: 'Segoe UI', sans-serif;
     }
+
     .form-container {
-      background-color: rgba(255, 255, 255, 0.9);
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      color: #e0ffe0;
+      border: 2px solid #28a745;
     }
+
+    label {
+      font-weight: 500;
+      margin-bottom: 4px;
+      color: #c5f7c5;
+    }
+
+    .form-control {
+      padding: 6px 10px;
+      font-size: 0.9rem;
+      border: 1px solid #28a745;
+      border-radius: 6px;
+    }
+
     h2 {
       font-weight: bold;
+      color: #28ff9c;
+      text-shadow: 1px 1px 4px black;
     }
+
+    .form-check-label {
+      color: #aef4ae;
+    }
+
     .btn-primary {
-      background-color: #007bff;
+      background-color: #28a745;
       border: none;
+      font-weight: bold;
     }
+
     .btn-primary:hover {
-      background-color: #0056b3;
+      background-color: #1e7e34;
+    }
+
+    .alert {
+      font-weight: bold;
     }
   </style>
 </head>
@@ -77,22 +65,26 @@
     <div class="form-container">
       <h2 class="text-center mb-4">🕵️ Fake Job Posting Detection</h2>
       <form method="POST" action="/predict">
-        {% for field in [
-          'title', 'location', 'department', 'salary_range', 'company_profile',
-          'description', 'requirements', 'benefits', 'employment_type',
-          'required_experience', 'required_education', 'industry', 'function'] %}
-          <div class="mb-3">
-            <label class="form-label">{{ field.replace('_', ' ').title() }}</label>
-            <input type="text" class="form-control" name="{{ field }}" placeholder="Enter {{ field.replace('_', ' ') }}">
-          </div>
-        {% endfor %}
+        <div class="row">
+          {% for field in [
+            'title', 'location', 'department', 'salary_range', 'company_profile',
+            'description', 'requirements', 'benefits', 'employment_type',
+            'required_experience', 'required_education', 'industry', 'function'] %}
+            <div class="col-md-6 mb-2">
+              <label>{{ field.replace('_', ' ').title() }}</label>
+              <input type="text" class="form-control" name="{{ field }}" placeholder="Enter {{ field.replace('_', ' ') }}">
+            </div>
+          {% endfor %}
+        </div>
 
-        {% for boolean in ['telecommuting', 'has_company_logo', 'has_questions'] %}
-          <div class="form-check mb-2">
-            <input type="checkbox" class="form-check-input" name="{{ boolean }}" value="1">
-            <label class="form-check-label">{{ boolean.replace('_', ' ').title() }}</label>
-          </div>
-        {% endfor %}
+        <div class="row">
+          {% for boolean in ['telecommuting', 'has_company_logo', 'has_questions'] %}
+            <div class="col-md-4 form-check mb-3">
+              <input type="checkbox" class="form-check-input" name="{{ boolean }}" value="1">
+              <label class="form-check-label">{{ boolean.replace('_', ' ').title() }}</label>
+            </div>
+          {% endfor %}
+        </div>
 
         <button type="submit" class="btn btn-primary w-100 mt-3">🔍 Predict</button>
       </form>
@@ -108,7 +100,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Optional JS enhancement
     document.querySelector('form').addEventListener('submit', function () {
       const btn = document.querySelector('button[type="submit"]');
       btn.innerHTML = '⏳ Predicting...';
